@@ -7,14 +7,22 @@
 # Distributed under terms of the GNU GPL license.
 
 from twython import Twython
- 
- APP_KEY = 'key' # Customer Key here
- APP_SECRET = 'secret key' # Customer secret here
- OAUTH_TOKEN = 'access token' # Access Token here
- OAUTH_TOKEN_SECRET = 'token secret' # Access Token Secret here
-  
- twitter = Twython(APP_KEY, APP_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
-   
- var_status=raw_input('enter your tweet'); #accepts input you can type your tweet
- twitter.update_status(status=var_status); #you can check twitter to see your tweet live 
+from flask import Flask
+import apiConfig
 
+app = Flask(__name__)
+
+APP_KEY = apiConfig.APP_KEY # Customer Key here
+APP_SECRET = apiConfig.APP_SECRET # Customer secret here
+OAUTH_TOKEN = apiConfig.OAUTH_TOKEN  # Access Token here
+OAUTH_TOKEN_SECRET = apiConfig.OAUTH_TOKEN_SECRET # Access Token Secret here
+
+twitter = Twython(APP_KEY, APP_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
+   
+@app.route("/sendTweet/<message>")
+def sendTweet(message):
+    twitter.update_status(status=message); #you can check twitter to see your tweet live 
+    return "Done." 
+
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", port=8080, debug=True)
