@@ -19,10 +19,14 @@ OAUTH_TOKEN_SECRET = apiConfig.OAUTH_TOKEN_SECRET # Access Token Secret here
 
 twitter = Twython(APP_KEY, APP_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
    
+@app.route("/")
+def index():
+    return "Hello"
+
 @app.route("/sendTweet/<message>")
 def sendTweet(message):
     twitter.update_status(status=message); #you can check twitter to see your tweet live 
     return "Done." 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=8080, debug=True)
+    app.run(host="127.0.0.1", port=8080, debug=True)
